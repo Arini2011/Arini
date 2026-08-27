@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Birthday SABEER!</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      width: 100%;
+      max-width: 450px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .step {
+      display: none;
+    }
+
+    .step.active {
+      display: block;
+    }
+
+    h2 {
+      color: #333;
+      margin-bottom: 25px;
+      font-size: 1.4rem;
+    }
+
+    .btn-container {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      position: relative;
+      min-height: 50px;
+    }
+
+    button {
+      background-color: #ff6b6b;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 1rem;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: transform 0.2s, background-color 0.2s;
+    }
+
+    button:hover {
+      background-color: #ee5253;
+      transform: scale(1.05);
+    }
+
+    #noBtn1 {
+      position: relative;
+      transition: 0.1s ease;
+    }
+
+    .countdown {
+      font-size: 4rem;
+      font-weight: bold;
+      color: #ff6b6b;
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+
+    .final-screen {
+      animation: fadeIn 1s forwards;
+    }
+
+    .photo-frame {
+      width: 180px;
+      height: 180px;
+      margin: 0 auto 20px auto;
+      border-radius: 50%;
+      border: 5px solid #ff6b6b;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .wishes {
+      font-size: 1.1rem;
+      color: #444;
+      line-height: 1.6;
+      margin-top: 15px;
+      font-weight: 500;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <!-- Question 1 -->
+    <div class="step active" id="step1">
+      <h2>Do you like me?</h2>
+      <div class="btn-container">
+        <button onclick="nextStep(2)">Yes</button>
+        <button id="noBtn1" onmouseover="moveNoButton()" onclick="moveNoButton()">No</button>
+      </div>
+    </div>
+
+    <!-- Question 2 -->
+    <div class="step" id="step2">
+      <h2>Are you excited for turning into 18?</h2>
+      <div class="btn-container">
+        <button onclick="nextStep(3)">Yes</button>
+        <button onclick="nextStep(3)">No</button>
+      </div>
+    </div>
+
+    <!-- Question 3 -->
+    <div class="step" id="step3">
+      <h2>Who is your favorite friend in the world?</h2>
+      <div class="btn-container" style="flex-direction: column; gap: 10px;">
+        <button onclick="nextStep(4)">Me</button>
+        <button onclick="nextStep(4)">Always Me</button>
+      </div>
+    </div>
+
+    <!-- Question 4 -->
+    <div class="step" id="step4">
+      <h2>Are you ready for the surprise?</h2>
+      <div class="btn-container">
+        <button onclick="startCountdown()">Of course</button>
+      </div>
+    </div>
+
+    <!-- Countdown Step -->
+    <div class="step" id="stepCountdown">
+      <div class="countdown" id="timer">3</div>
+    </div>
+
+    <!-- Final Surprise Screen -->
+    <div class="step" id="stepFinal">
+      <div class="final-screen">
+        <div class="photo-frame">
+          <!-- Replace 'sabeer.jpg' with your photo filename -->
+          <img src="sabeer.jpg" alt="SABEER" id="userPhoto">
+        </div>
+        <h1 style="color: #ff6b6b; margin-bottom: 15px;">HAPPY BIRTHDAY SABEER</h1>
+        <div class="wishes">
+          <p>Wishing you endless joy!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audio Element for Song -->
+  <audio id="bgMusic" src="song.mp3" preload="auto"></audio>
+
+  <script>
+    function nextStep(stepNumber) {
+      document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+      document.getElementById('step' + stepNumber).classList.add('active');
+    }
+
+    function moveNoButton() {
+      const btn = document.getElementById('noBtn1');
+      const container = document.querySelector('.card');
+      
+      const containerRect = container.getBoundingClientRect();
+      const btnRect = btn.getBoundingClientRect();
+
+      const maxX = containerRect.width - btnRect.width - 40;
+      const maxY = containerRect.height - btnRect.height - 40;
+
+      const randomX = Math.floor(Math.random() * maxX) - (maxX / 2);
+      const randomY = Math.floor(Math.random() * maxY) - (maxY / 2);
+
+      btn.style.transform = `translate(${randomX}px, ${randomY}px)`;
+    }
+
+    function startCountdown() {
+      nextStep('Countdown');
+      let count = 3;
+      const timerElement = document.getElementById('timer');
+      
+      const interval = setInterval(() => {
+        count--;
+        if (count > 0) {
+          timerElement.textContent = count;
+        } else {
+          clearInterval(interval);
+          nextStep('Final');
+          const music = document.getElementById('bgMusic');
+          music.play().catch(e => console.log("Audio play failed:", e));
+        }
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
